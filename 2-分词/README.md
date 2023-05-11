@@ -59,11 +59,58 @@ result = reverse_maximum_match(text, word_dictionary)
 print(result)
 ```
 
+结果：
+
+```python
+['分词', '算法', '介绍', '最大', '匹配']
+```
+
 以上代码中的 `reverse_maximum_match` 函数实现了逆向最大匹配算法。它与正向最大匹配算法类似，不同之处在于从文本的尾部开始取子串，并逐渐缩小子串的长度，直到在词典中找到匹配的词为止。每次找到一个词后，将其插入到结果列表的开头，并将剩余的文本继续进行分词。最后返回分词结果。
 
 ## 双向最大匹配（Bidirectional Maximum Match Method，BMM）
 
 双向最大匹配算法结合了正向最大匹配和逆向最大匹配的思想。它先从左到右进行最大匹配，再从右到左进行最大匹配，最后根据一定的规则确定最终的分词结果。双向最大匹配算法相对于单向匹配算法在某些情况下能够提高分词的准确性。
+
+```python
+def bidirectional_maximum_match(text, word_dict):
+    result = []  # 存储分词结果
+    max_length = max(len(word) for word in word_dict)  # 词典中最长词的长度
+
+    while text:
+        # 正向最大匹配
+        forward_word = text[:max_length]      # 从头开始取最长词的长度的子串
+        while len(forward_word) > 1 and forward_word not in word_dict:
+            forward_word = forward_word[:-1]  # 若不在词典中，则逐渐缩小子串的长度
+
+        # 逆向最大匹配
+        reverse_word = text[-max_length:]     # 从尾部开始取最长词的长度的子串
+        while len(reverse_word) > 1 and reverse_word not in word_dict:
+            reverse_word = reverse_word[1:]   # 若不在词典中，则逐渐缩小子串的长度
+
+        # 根据规则确定最终的分词结果
+        if len(forward_word) <= len(reverse_word):
+            result.append(forward_word)
+            text = text[len(forward_word):]
+        else:
+            result.append(reverse_word)
+            text = text[:len(text) - len(reverse_word)]
+
+    return result
+
+# 示例用法
+word_dictionary = ["分词", "算法", "介绍", "最大", "匹配"]
+text = "分词算法介绍最大匹配"
+result = bidirectional_maximum_match(text, word_dictionary)
+print(result)
+```
+
+结果：
+
+```python
+['分词', '算法', '介绍', '最大', '匹配']
+```
+
+上述代码中的 `bidirectional_maximum_match` 函数实现了双向最大匹配算法。它同时使用了正向最大匹配和逆向最大匹配的思想。首先，从文本的头部开始进行正向最大匹配，找到最长的匹配词。然后，从文本的尾部开始进行逆向最大匹配，找到最长的匹配词。根据一定的规则，比较正向匹配词和逆向匹配词的长度，选择其中较短的词作为当前的分词结果。重复以上步骤，直到将整个文本分词完成。
 
 ## 隐马尔可夫模型（Hidden Markov Model，HMM）
 
