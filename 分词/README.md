@@ -26,6 +26,12 @@ result = forward_maximum_match(text, word_dictionary)
 print(result)
 ```
 
+结果如下：
+
+```python
+['分词', '算法', '介绍', '最大', '匹配']
+```
+
 上述代码中，`forward_maximum_match` 函数接受两个参数：待分词的文本 `text` 和词典列表 `word_dict`。函数通过遍历文本并从头开始取子串，然后逐渐缩小子串的长度，直到在词典中找到匹配的词为止。每次找到一个词后，将其添加到结果列表中，并将剩余的文本继续进行分词。最后返回分词结果。
 
 ##  逆向最大匹配（Reverse Maximum Match Method，RMM）
@@ -34,15 +40,15 @@ print(result)
 
 ```python
 def reverse_maximum_match(text, word_dict):
-    result = []  # 存储分词结果
-    max_length = max(len(word) for word in word_dict)  # 词典中最长词的长度
+    result = []                                          # 存储分词结果
+    max_length = max(len(word) for word in word_dict)    # 词典中最长词的长度
 
     while text:
-        word = text[-max_length:]  # 从尾部开始取最长词的长度的子串
+        word = text[-max_length:]                        # 从尾部开始取最长词的长度的子串
         while len(word) > 1 and word not in word_dict:
-            word = word[1:]  # 若不在词典中，则逐渐缩小子串的长度
-        result.insert(0, word)  # 将分词结果插入到列表的开头
-        text = text[:len(text) - len(word)]  # 剩余文本继续进行分词
+            word = word[1:]                              # 若不在词典中，则逐渐缩小子串的长度
+        result.insert(0, word)                           # 将分词结果插入到列表的开头
+        text = text[:len(text) - len(word)]              # 剩余文本继续进行分词
 
     return result
 
